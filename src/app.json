@@ -1,13 +1,16 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/logs/main",
-    "pages/counter/main"
+    "pages/tests/main",
+    "pages/me/main",
+    "pages/groups/main",
+    "pages/groupMembers/main",
+    "pages/login/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "考评小程序",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -18,19 +21,19 @@
     "list": [
       {
         "pagePath": "pages/index/main",
-        "text": "首页",
+        "text": "考评小程序",
         "iconPath": "/static/icons/home.png",
         "selectedIconPath": "/static/icons/home_active.png"
       },
       {
-        "pagePath": "pages/logs/main",
-        "text": "考试",
+        "pagePath": "pages/tests/main",
+        "text": "今日考试",
         "iconPath": "/static/icons/test.png",
         "selectedIconPath": "/static/icons/test_active.png"
       },
       {
-        "pagePath": "pages/counter/main",
-        "text": "我的",
+        "pagePath": "pages/me/main",
+        "text": "我",
         "iconPath": "/static/icons/user.png",
         "selectedIconPath": "/static/icons/user_active.png"
       }
