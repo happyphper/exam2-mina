@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/logs/main",
+    "pages/counter/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#234561",
+    "selectedColor": "#123456",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/main",
+        "text": "首页",
+        "iconPath": "/static/icons/home.png",
+        "selectedIconPath": "/static/icons/home_active.png"
+      },
+      {
+        "pagePath": "pages/logs/main",
+        "text": "考试",
+        "iconPath": "/static/icons/test.png",
+        "selectedIconPath": "/static/icons/test_active.png"
+      },
+      {
+        "pagePath": "pages/counter/main",
+        "text": "我的",
+        "iconPath": "/static/icons/user.png",
+        "selectedIconPath": "/static/icons/user_active.png"
+      }
+    ],
+    "position": "bottom"
+  }
+}
