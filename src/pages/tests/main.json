@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "今日考试",
   "usingComponents": {
-    "van-card": "/static/vant/card/index"
+    "van-card": "/static/vant/card/index",
+    "van-tag": "/static/vant/tag/index"
   }
 }

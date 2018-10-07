@@ -25,4 +25,9 @@
     -webkit-transition: width 2s;
     -o-transition: width 2s;
   }
+  
+  .app-container {
+    background: #F7F7F7;
+    height: 100%;
+  }
 </style>

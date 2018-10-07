@@ -6,14 +6,15 @@
     "pages/groups/main",
     "pages/groupMembers/main",
     "pages/login/main",
-    "pages/paper/main"
+    "pages/paper/main",
+    "pages/testResults/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#F7F7F7",
     "navigationBarTitleText": "考评小程序",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#eeeeee"
+    "backgroundColor": "#F7F7F7"
   },
   "tabBar": {
     "color": "#234561",

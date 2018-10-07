@@ -1,58 +1,48 @@
 <template>
   <div>
-    <van-panel
-      :title="question.title"
-      :desc="question.type"
-      :status="question.status"
-      use-footer-slot>
-      <view>
-        <van-button
-          style="margin: 5rpx;"
-          :block="true"
-          size="large"
-          v-for="option in question.options" :key="option.id"
-          @click="onSubmit(question.id, option.id)"
-        >{{ option.content }}
-        </van-button>
-      </view>
-    </van-panel>
-    <van-toast id="van-toast" />
+    <van-panel :title="'题目：' + (key + 1) + '/' + tableData.length" :desc="'得分：' + score"></van-panel>
+    <view v-if="tableData.length">
+      <van-panel
+        :title="question.title"
+        :desc="question.score + '分'"
+        :status="question.status"
+      >
+        <div class="option-container">
+          <view v-for="option in question.options" :key="option.id" class="option-item">
+            <van-button
+              :block="true"
+              size="large"
+              @click="onSubmit(question.id, option.id)"
+              :type="option.status"
+            >{{ option.title }}
+            </van-button>
+          </view>
+        </div>
+      </van-panel>
+    </view>
+    <view v-else class="title">咦？该试卷没有任何题目</view>
   </div>
 </template>
 
 <script>
-  import Toast from '@/../static/vant/toast/toast'
-  
   export default {
+    onShow() {
+      wx.showLoading({ title: "努力获取试卷中..." });
+      this.testId = this.$root.$mp.query.testId;
+      this.$http.get(`/tests/${this.testId}/start`).then(response => {
+        this.tableData = response.data;
+        wx.hideLoading();
+      }).catch(err => {
+        console.log(err);
+        wx.hideLoading();
+      });
+    },
     data() {
       return {
         key: 0,
-        tableData: [
-          {
-            id: 1,
-            title: "1 + 1 = ？",
-            type: "single",
-            options: [
-              { id: 1, content: "1" },
-              { id: 2, content: "2" },
-              { id: 3, content: "3" },
-              { id: 4, content: "4" }
-            ],
-            status: null
-          },
-          {
-            id: 2,
-            title: "问世间情为何物，直教人生死相许，这一首诗出自哪一位名家之手？",
-            type: "single",
-            options: [
-              { id: 1, content: "杜甫" },
-              { id: 2, content: "李白" },
-              { id: 3, content: "李贺" },
-              { id: 4, content: "杜牧" }
-            ],
-            status: null
-          },
-        ]
+        score: 0,
+        testId: null,
+        tableData: []
       };
     },
     computed: {
@@ -62,25 +52,56 @@
     },
     methods: {
       onSubmit(questionId, optionId) {
-        Toast.loading({
-          mask: true,
-          message: '判卷中...'
-        })
-        this.key = this.key + 1
-        if (this.tableData.length === this.key) {
-          Toast.loading({
-            mask: true,
-            message: '答题完成，正在读取'
-          })
-        } else {
-        
-        }
-        console.log(questionId, optionId);
+        wx.showLoading({ title: "提交答案中..." });
+        this.$http.post(`/tests/${this.testId}/questions`, {
+          question_id: questionId,
+          answer: [optionId]
+        }).then(response => {
+          this.score = this.score + response.score;
+          if (response.is_right) {
+            this.question.options.find(item => item.id === optionId).status = "primary";
+          } else {
+            this.question.options.find(item => item.id === optionId).status = "danger";
+            response.question.answer.forEach(id => {
+              this.question.options.find(item => item.id === id).status = "primary";
+            });
+          }
+        }).catch(err => {
+          console.log(err);
+        });
+        wx.hideLoading();
+        setTimeout(() => {
+          if (this.tableData.length === (this.key + 1)) {
+            wx.showLoading({ title: "所有题目已完成" });
+            wx.navigateTo({ url: "/pages/testResults/main" });
+          } else {
+            this.key = this.key + 1;
+          }
+        }, 1500);
       }
     }
   };
 </script>
 
 <style>
-
+  .title {
+    text-align: center;
+    color: #424A60;
+  }
+  
+  .option-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    margin-top: 15 rpx;
+    width: 100%;
+  }
+  .option-item {
+    display: block;
+    width: 95%;
+    margin-top: 20rpx;
+  }
 </style>

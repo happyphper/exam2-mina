@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <van-cell-group custom-class="margin-top">
+  <div class="app-container padding-top">
+    <van-cell-group>
       <van-cell is-link>
         <view slot="title">
           <div class="header-wrapper">
@@ -19,7 +19,7 @@
     </van-cell-group>
     
     <van-cell-group>
-      <van-cell title="考试记录" icon="records" :border="true" is-link />
+      <van-cell title="考试记录" icon="records" :border="true" is-link  url="/pages/testResults/main"/>
     </van-cell-group>
     
     <van-cell-group>
@@ -77,5 +77,8 @@ export default {
   }
   .margin-top {
     margin-top: 30rpx;
+  }
+  .padding-top {
+    padding-top: 30rpx;
   }
 </style>
