@@ -1,28 +1,38 @@
 <template>
   <div>
-    <van-card
-      v-for="test in tableData"
-      :key="test.id"
-      :title="test.title"
-      :desc="test.course.title"
-      thumb="/static/images/test_thumb.jpeg"
-      @click="onStartTest">
-      <view slot="footer">
-        <p class="text">开考时间：{{ test.started_at }}</p>
-        <p class="text">结束时间：{{ test.ended_at }}</p>
-      </view>
-    </van-card>
+    <view v-if="tableData.length">
+      <van-card
+        v-for="test in tableData"
+        :key="test.id"
+        :title="test.title"
+        :desc="test.course.title"
+        thumb="/static/images/test_thumb.jpeg"
+        @click="onStartTest">
+        <view slot="footer">
+          <p class="text">开考时间：{{ test.started_at }}</p>
+          <p class="text">结束时间：{{ test.ended_at }}</p>
+        </view>
+      </van-card>
+    </view>
+    <view class="title" v-else>暂无考试计划</view>
   </div>
 </template>
 
 <script>
 export default {
+  onShow() {
+    wx.showLoading({ title: '努力获取考试信息中...'})
+    this.$http.get('/today-tests').then(response => {
+      this.tableData = response.data
+      wx.hideLoading()
+    }).catch(err => {
+      console.log(err)
+      wx.hideLoading()
+    })
+  },
   data () {
     return {
-      tableData: [
-        {id:1, title: '旅游管理', started_at: '2018-12-12 10:00:00', ended_at: '2018-12-12 12:00:00', course: { id: 1, title: '酒店管理' }},
-        {id:2, title: '酒店管理', started_at: '2018-12-12 10:00:00', ended_at: '2018-12-12 12:00:00', course: { id: 1, title: '酒店管理' }}
-      ]
+      tableData: []
     }
   },
 
@@ -36,6 +46,10 @@ export default {
 </script>
 
 <style>
+  .title {
+    text-align: center;
+    color: #424A60;
+  }
   .text {
     font-size: 20rpx;
   }
