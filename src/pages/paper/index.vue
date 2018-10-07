@@ -7,7 +7,7 @@
       use-footer-slot>
       <view>
         <van-button
-          style="width: 50%;margin: 5rpx;"
+          style="margin: 5rpx;"
           :block="true"
           size="large"
           v-for="option in question.options" :key="option.id"
@@ -82,12 +82,5 @@
 </script>
 
 <style>
-  .option-container {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    flex-direction: column;
-    padding: 200 rpx 0;
-    box-sizing: border-box;
-  }
+
 </style>

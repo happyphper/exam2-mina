@@ -91,7 +91,7 @@ VantComponent({
       });
     },
     onClickIcon: function onClickIcon() {
-      this.$emit('click-icon');
+      this.$emit('clickIcon');
     },
     getShowClear: function getShowClear(value) {
       value = value === undefined ? this.data.value : value;
