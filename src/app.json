@@ -5,13 +5,15 @@
     "pages/me/main",
     "pages/groups/main",
     "pages/groupMembers/main",
-    "pages/login/main"
+    "pages/login/main",
+    "pages/paper/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "考评小程序",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#eeeeee"
   },
   "tabBar": {
     "color": "#234561",
@@ -39,5 +41,6 @@
       }
     ],
     "position": "bottom"
-  }
+  },
+  "debug": true
 }

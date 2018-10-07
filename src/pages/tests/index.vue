@@ -5,7 +5,8 @@
       :key="test.id"
       :title="test.title"
       :desc="test.course.title"
-      thumb="/static/images/test_thumb.jpeg">
+      thumb="/static/images/test_thumb.jpeg"
+      @click="onStartTest">
       <view slot="footer">
         <p class="text">开考时间：{{ test.started_at }}</p>
         <p class="text">结束时间：{{ test.ended_at }}</p>
@@ -25,7 +26,12 @@ export default {
     }
   },
 
-  created () {}
+  created () {},
+  methods: {
+    onStartTest() {
+      wx.navigateTo({ url: '/pages/paper/main' })
+    }
+  }
 }
 </script>
 
