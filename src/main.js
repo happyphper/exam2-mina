@@ -10,7 +10,7 @@ const baseURL = process.env.API_BASE_URL;
 fly.config.baseURL = baseURL;
 
 fly.interceptors.request.use((config, promise) => {
-  const token = wx.getStorageSync('token')
+  const token = wx.getStorageSync("token");
   //给所有请求添加自定义header
   config.headers["Authorization"] = "Bearer " + token;
   return config;
@@ -23,6 +23,18 @@ fly.interceptors.response.use(
   },
   (err) => {
     // 发生网络错误后会走到这里
+    if (err.response.status === 422) {
+      const values = Object.values(err.response.data.errors);
+      wx.showToast({
+        title: values.join(";"),
+        icon: 'none'
+      });
+    } else {
+      wx.showToast({
+        title: err.response.data.message,
+        icon: 'none'
+      });
+    }
     return Promise.reject(err);
   }
 );

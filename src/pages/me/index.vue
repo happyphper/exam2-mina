@@ -4,10 +4,10 @@
       <van-cell is-link>
         <view slot="title">
           <div class="header-wrapper">
-            <image src="/static/images/avatar.png" class="avatar"></image>
+            <image :src="user.avatar || '/static/images/avatar.png'" class="avatar"></image>
             <div class="title">
-              <p>王宝龙</p>
-              <p>学号: 110430042</p>
+              <p>{{ user.name }}</p>
+              <p>{{ user.student_id }}</p>
             </div>
           </div>
         </view>
@@ -46,8 +46,8 @@ import store from './store'
 
 export default {
   computed: {
-    count () {
-      return store.state.count
+    user () {
+      return wx.getStorageSync('user')
     }
   },
   methods: {

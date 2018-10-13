@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <image src="/static/images/lhdx_logo.png" class="logo"/>
+      <image src="/static/images/lhdx_logo.png" class="logo" style="width:480rpx;height:480rpx;margin: 30 rpx;"/>
     </div>
     
     <van-cell-group>
@@ -74,7 +74,7 @@
           password: this.password
         }).then(response => {
           wx.setStorageSync('token', response.access_token)
-          wx.redirectTo({ url: '/pages/index/main' })
+          wx.switchTab({ url: '/pages/tests/main' })
           wx.hideLoading()
         }).catch((err) => {
           console.log(err)
@@ -91,13 +91,5 @@
   }
 </script>
 <style scoped>
-  .logo {
-    width: 400 rpx;
-    height: 400 rpx;
-    margin: 30 rpx;
-  }
-  
-  .margin-top {
-    margin-top: 20 rpx;
-  }
+
 </style>
