@@ -28,14 +28,15 @@
       />
     </van-cell-group>
     
-    <van-button
-      size="large"
-      type="primary"
-      :block="true"
-      style="margin: 15rpx;"
-      @click="onSubmit"
-    >登录
-    </van-button>
+    <div class="button">
+      <van-button
+        size="large"
+        type="primary"
+        :block="true"
+        @click="onSubmit"
+      >登录
+      </van-button>
+    </div>
     
     <!--<van-button-->
       <!--size="large"-->
@@ -47,12 +48,14 @@
     <!--&gt;微信登录-->
     <!--</van-button>-->
     
-    <van-toast id="van-toast"/>
+    <van-toast id="login-toast"/>
+    <van-notify id="login-error-notify" />
   </div>
 </template>
 
 <script>
   import Toast from "@/../static/vant/toast/toast";
+  import Notify from '@/../static/vant/notify/notify';
   
   export default {
     data() {
@@ -66,19 +69,38 @@
         Toast("初始密码：123456");
       },
       onSubmit() {
-        wx.showLoading({
-          title: '登录中...'
-        })
+        Toast.loading({
+          duration: 0,
+          forbidClick: true,
+          message: '验证',
+          loadingType: 'spinner',
+          selector: '#login-toast',
+        });
         this.$http.post('/auth/login', {
           username: this.username,
           password: this.password
         }).then(response => {
           wx.setStorageSync('token', response.access_token)
-          wx.switchTab({ url: '/pages/tests/main' })
-          wx.hideLoading()
+          this.password = null
+          wx.switchTab({ url: '/pages/index/main' })
         }).catch((err) => {
-          console.log(err)
-          wx.hideLoading()
+          Toast.clear()
+          if (err.response.status === 422) {
+            const values = Object.values(err.response.data.errors);
+            Notify({
+              text: values.join(';'),
+              duration: 1500,
+              selector: '#login-error-notify',
+              backgroundColor: '#CB4B45'
+            });
+          } else {
+            Notify({
+              text: err.response.data.message || '错误',
+              duration: 1500,
+              selector: '#login-error-notify',
+              backgroundColor: '#CB4B45'
+            });
+          }
         })
       },
       onInputUsername(event) {
@@ -91,5 +113,8 @@
   }
 </script>
 <style scoped>
-
+  .button {
+    width: 90%;
+    margin: 0 auto;
+  }
 </style>

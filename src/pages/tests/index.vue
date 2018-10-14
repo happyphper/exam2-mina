@@ -16,30 +16,37 @@
         </view>
       </van-card>
     </div>
-    <div class="title" v-else>暂无考试计划</div>
+    <div class="title" v-else>😰 很遗憾，今日没有考试。</div>
+    
+    <van-toast id="van-toast" />
   </div>
 </template>
 
 <script>
+import Toast from '@/../static/vant/toast/toast';
+
 export default {
   onShow() {
-    wx.showLoading({ title: '努力获取考试信息中...'})
-    this.$http.get('/today-tests', { include: 'result' }).then(response => {
-      this.tableData = response.data
-      wx.hideLoading()
-    }).catch(err => {
-      console.log(err)
-      wx.hideLoading()
-    })
+    wx.startPullDownRefresh()
+  },
+  onPullDownRefresh() {
+    this.fetchTests()
   },
   data () {
     return {
       tableData: []
     }
   },
-
-  created () {},
   methods: {
+    fetchTests() {
+      this.$http.get('/today-tests', { include: 'course,result' }).then(response => {
+        this.tableData = response.data
+        Toast.clear()
+        wx.stopPullDownRefresh()
+      }).catch(err => {
+        Toast.fail(err.response.message)
+      })
+    },
     onStartTest(test) {
       if (test.result && test.result.is_finished) {
         wx.navigateTo({ url: '/pages/testResults/main' })

@@ -22,19 +22,6 @@ fly.interceptors.response.use(
     return response.data;
   },
   (err) => {
-    // 发生网络错误后会走到这里
-    if (err.response.status === 422) {
-      const values = Object.values(err.response.data.errors);
-      wx.showToast({
-        title: values.join(";"),
-        icon: 'none'
-      });
-    } else {
-      wx.showToast({
-        title: err.response.data.message,
-        icon: 'none'
-      });
-    }
     return Promise.reject(err);
   }
 );

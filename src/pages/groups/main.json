@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "我的班级列表",
+  "navigationBarTitleText": "同班同学",
   "usingComponents": {
     "van-cell": "/static/vant/cell/index",
     "van-cell-group": "/static/vant/cell-group/index"

@@ -14,13 +14,15 @@
               size="large"
               @click="onSubmit(question.id, option.id)"
               :type="option.status"
-            >{{ option.title }}
+            >{{ option.content }}
             </van-button>
           </view>
         </div>
       </van-panel>
     </view>
-    <view v-else class="title">咦？该试卷没有任何题目</view>
+    <view v-else class="title">
+      咦？该试卷没有任何题目
+    </view>
   </div>
 </template>
 

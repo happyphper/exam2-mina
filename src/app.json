@@ -4,17 +4,18 @@
     "pages/tests/main",
     "pages/me/main",
     "pages/groups/main",
-    "pages/groupMembers/main",
     "pages/login/main",
     "pages/paper/main",
-    "pages/testResults/main"
+    "pages/testResults/main",
+    "pages/password/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F7F7F7",
     "navigationBarTitleText": "考评小程序",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F7F7F7"
+    "backgroundColor": "#F7F7F7",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#234561",

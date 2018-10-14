@@ -15,7 +15,8 @@
     </van-cell-group>
   
     <van-cell-group custom-class="margin-top">
-      <van-cell title="我的班级" icon="points-mall" :border="true" is-link url="/pages/groups/main"/>
+      <van-cell v-if="!user || !user.group" title="没有班级" icon="points-mall" :border="true"></van-cell>
+      <van-cell v-else :title="user && user.group && user.group.name" icon="points-mall" :border="true" is-link url="/pages/groups/main"/>
     </van-cell-group>
     
     <van-cell-group>
@@ -27,35 +28,31 @@
     </van-cell-group>
   
     <van-cell-group custom-class="margin-top">
-      <van-cell title="手机绑定" icon="phone" :border="true" is-link />
-    </van-cell-group>
-  
-    <van-cell-group custom-class="margin-top">
-      <van-cell title="修改密码" icon="setting" :border="true" is-link />
+      <van-cell title="修改密码" icon="setting" :border="true" is-link url="/pages/password/main"/>
     </van-cell-group>
     
     <van-cell-group custom-class="margin-top">
-      <van-cell title="退出登录" icon="close" :border="true" is-link />
+      <van-cell title="退出登录" icon="close" :border="true" @click="handleLogout" />
     </van-cell-group>
   </div>
 </template>
 
 <script>
-// Use Vuex
-import store from './store'
-
 export default {
-  computed: {
-    user () {
-      return wx.getStorageSync('user')
+  mounted() {
+    this.user = wx.getStorageSync('user')
+  },
+  data() {
+    return {
+      user: {
+        group: {}
+      }
     }
   },
   methods: {
-    increment () {
-      store.commit('increment')
-    },
-    decrement () {
-      store.commit('decrement')
+    handleLogout() {
+      wx.clearStorage()
+      wx.redirectTo({ url: '/pages/login/main' })
     }
   }
 }
