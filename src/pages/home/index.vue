@@ -3,17 +3,17 @@
     <h1 class="page-title"> 考 评 统 计 </h1>
     <div class="test-container">
       <div class="avatar-container">
-        <img src="/static/images/avatar.png" class="avatar">
-        <p>王宝龙</p>
+        <img :src="avatar" class="avatar">
+        <p>{{ user.name }}</p>
       </div>
       <div class="info-container">
         <div class="left-container">
-          <h3>已获得分数</h3>
-          <h4>100</h4>
+          <h3>已答过题目</h3>
+          <h4>{{ questionsCount }}</h4>
         </div>
         <div class="right-container">
           <h3>已参加考试</h3>
-          <h4>25</h4>
+          <h4>{{ testsCount }}</h4>
         </div>
       </div>
     </div>
@@ -25,11 +25,19 @@
 
 <script>
   export default {
-    onShow() {
-    
-    },
-    data() {
-      return {};
+    computed: {
+      user() {
+        return wx.getStorageSync('user')
+      },
+      avatar() {
+        return this.user.avatar ? this.user.avatar : '/static/images/avatar.png'
+      },
+      questionsCount() {
+        return this.user.meta.questions_count
+      },
+      testsCount() {
+        return this.user.meta.tests_count
+      }
     },
     methods: {}
   };
