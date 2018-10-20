@@ -7,15 +7,11 @@
     height: 100%;
   }
   .container {
-    width:100%;
-    height:100%;
+    width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 200 rpx 0;
-    box-sizing: border-box;
+    background-color: #371C5D;
+    color: white;
+    text-align: center;
   }
   
   /* this rule will be remove */

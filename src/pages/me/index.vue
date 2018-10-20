@@ -16,11 +16,11 @@
   
     <van-cell-group custom-class="margin-top">
       <van-cell v-if="!user || !user.group" title="没有班级" icon="points-mall" :border="true"></van-cell>
-      <van-cell v-else :title="user && user.group && user.group.name" icon="points-mall" :border="true" is-link url="/pages/groups/main"/>
+      <van-cell v-else :title="user && user.group && user.group.name" icon="points-mall" :border="true" is-link url="/pages/classmate/main"/>
     </van-cell-group>
     
     <van-cell-group>
-      <van-cell title="考试记录" icon="records" :border="true" is-link  url="/pages/testResults/main"/>
+      <van-cell title="考试记录" icon="records" :border="true" is-link  url="/pages/result/main"/>
     </van-cell-group>
     
     <van-cell-group>

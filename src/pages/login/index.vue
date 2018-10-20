@@ -1,55 +1,8 @@
 <template>
-  <div>
-    <div class="container">
-      <image src="/static/images/lhdx_logo.png" class="logo" style="width:480rpx;height:480rpx;margin: 30 rpx;"/>
-    </div>
-    
-    <van-cell-group>
-      <van-field
-        :value="username"
-        required
-        clearable
-        label="账户"
-        icon="question"
-        placeholder="请输入用户名/手机/学号"
-        @clickIcon="onClickIcon"
-        @input="onInputUsername"
-      />
-      
-      <van-field
-        :value="password"
-        type="password"
-        label="密码"
-        placeholder="请输入密码"
-        clearable
-        required
-        :border="true"
-        @input="onInputPassword"
-      />
-    </van-cell-group>
-    
-    <div class="button">
-      <van-button
-        size="large"
-        type="primary"
-        :block="true"
-        @click="onSubmit"
-      >登录
-      </van-button>
-    </div>
-    
-    <!--<van-button-->
-      <!--size="large"-->
-      <!--type="primary"-->
-      <!--:block="true"-->
-      <!--open-type="getUserInfo"-->
-      <!--@getuserinfo="onGetUserInfo"-->
-      <!--style="margin: 15rpx;"-->
-    <!--&gt;微信登录-->
-    <!--</van-button>-->
-    
-    <van-toast id="login-toast"/>
-    <van-notify id="login-error-notify" />
+  <div class="login-container">
+    <input type="text" placeholder="请输入手机/学号" class="input-container">
+    <input type="password" placeholder="请输入密码" class="input-container">
+    <button type="default" hover-class="button-hover"> 登录 </button>
   </div>
 </template>
 
@@ -113,8 +66,34 @@
   }
 </script>
 <style scoped>
-  .button {
-    width: 90%;
-    margin: 0 auto;
+  .login-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #371C5D;
+    color: white;
+    font-size: 30rpx;
+  }
+  .input-container {
+    background-color: #FFFFFF;
+    width: 80%;
+    margin: 50rpx auto;
+    padding:15rpx;
+    border-radius: 98rpx;
+    color: #000000;
+  }
+  button {
+    width: 80%;
+    margin-top: 20rpx;
+    background-color: #D5D0DD;
+    color: #5F4C7E;
+    border-radius: 98rpx; 
+  }
+  button:after {
+    border-radius: 98rpx;
+  }
+  .button-hover {
+    background-color: #F7C443;
   }
 </style>

@@ -3,19 +3,21 @@
     "pages/index/main",
     "pages/tests/main",
     "pages/me/main",
-    "pages/groups/main",
+    "pages/classmate/main",
     "pages/login/main",
     "pages/paper/main",
-    "pages/testResults/main",
-    "pages/password/main"
+    "pages/result/main",
+    "pages/password/main",
+    "pages/home/main",
+    "pages/phone/main"
   ],
   "window": {
+    "navigationBarBackgroundColor": "#371C5D",
+    "navigationBarTextStyle":"white",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F7F7F7",
     "navigationBarTitleText": "考评小程序",
-    "navigationBarTextStyle": "black",
     "backgroundColor": "#F7F7F7",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": false
   },
   "tabBar": {
     "color": "#234561",
@@ -24,10 +26,10 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/index/main",
-        "text": "考评小程序",
-        "iconPath": "/static/icons/home.png",
-        "selectedIconPath": "/static/icons/home_active.png"
+        "pagePath": "pages/home/main",
+        "text": "考评统计",
+        "iconPath": "/static/icons/test.png",
+        "selectedIconPath": "/static/icons/test_active.png"
       },
       {
         "pagePath": "pages/tests/main",

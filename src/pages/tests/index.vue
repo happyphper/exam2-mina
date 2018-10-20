@@ -1,36 +1,77 @@
 <template>
-  <div class="app-container">
-    <div v-if="tableData.length" class="test-container">
-      <van-card
-        v-for="test in tableData" :key="test.id"
-        :title="test.title"
-        :desc="test.course.title"
-        thumb="/static/images/test_thumb.jpeg"
-        @click="onStartTest(test)">
-        <view slot="footer">
-          <van-tag plain mask type="success" v-if="test.result && test.result.is_finished">已交卷</van-tag>
-          <van-tag plain mask type="primary" v-else-if="test.result && !test.result.is_finished">答题中</van-tag>
-          <van-tag plain mask type="danger" v-else>未答题</van-tag>
-          <p class="text">开考时间：{{ test.started_at }}</p>
-          <p class="text">结束时间：{{ test.ended_at }}</p>
-        </view>
-      </van-card>
+  <div class="test-container">
+    <van-notice-bar
+      mode="closeable"
+      text="足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。"
+    />
+    <div class="card">
+      <van-row>
+        <van-col span="8">
+          <img src="/static/images/test_thumb.jpeg" class="thumb">
+        </van-col>
+        <van-col span="16" class="text-container">
+          <van-row>
+            <van-col span="24" class="test-course">
+              <img src="/static/icons/course.png" class="icon">
+              旅游文化
+            </van-col>
+            <van-col span="24" class="test-title">
+              <img src="/static/icons/test.png" class="icon">
+              旅游专业2018-12-12日常测评
+            </van-col>
+            <van-col span="24" class="test-time">
+              <img src="/static/icons/start.png" class="icon">
+              2018-12-12 08:00:00
+            </van-col>
+            <van-col span="24" class="test-time">
+              <img src="/static/icons/end.png" class="icon">
+              2018-12-12 09:00:00
+            </van-col>
+            <van-col span="24">
+              <van-tag  type="success">已完成</van-tag>
+            </van-col>
+          </van-row>
+        </van-col>
+      </van-row>
     </div>
-    <div class="title" v-else>😰 很遗憾，今日没有考试。</div>
-    
-    <van-toast id="van-toast" />
+    <div class="card">
+      <van-row>
+        <van-col span="8">
+          <img src="/static/images/cover.jpeg" class="thumb">
+        </van-col>
+        <van-col span="16" class="text-container">
+          <van-row>
+            <van-col span="24" class="test-course">
+              <img src="/static/icons/course.png" class="icon">
+              旅游文化
+            </van-col>
+            <van-col span="24" class="test-title">
+              <img src="/static/icons/test.png" class="icon">
+              旅游专业2018-12-12日常测评
+            </van-col>
+            <van-col span="24" class="test-time">
+              <img src="/static/icons/start.png" class="icon">
+              2018-12-12 08:00:00
+            </van-col>
+            <van-col span="24" class="test-time">
+              <img src="/static/icons/end.png" class="icon">
+              2018-12-12 09:00:00
+            </van-col>
+            <van-col span="24">
+              <van-tag type="primary">未答题</van-tag>
+            </van-col>
+          </van-row>
+        </van-col>
+      </van-row>
+    </div>
   </div>
 </template>
 
 <script>
-import Toast from '@/../static/vant/toast/toast';
 
 export default {
   onShow() {
-    wx.startPullDownRefresh()
-  },
-  onPullDownRefresh() {
-    this.fetchTests()
+  
   },
   data () {
     return {
@@ -38,38 +79,44 @@ export default {
     }
   },
   methods: {
-    fetchTests() {
-      this.$http.get('/today-tests', { include: 'course,result' }).then(response => {
-        this.tableData = response.data
-        Toast.clear()
-        wx.stopPullDownRefresh()
-      }).catch(err => {
-        Toast.fail(err.response.message)
-      })
-    },
-    onStartTest(test) {
-      if (test.result && test.result.is_finished) {
-        wx.navigateTo({ url: '/pages/testResults/main' })
-      } else {
-        wx.navigateTo({ url: '/pages/paper/main?testId=' + test.id })
-      }
-    }
+  
   }
 }
 </script>
 
 <style>
-  .title {
-    text-align: center;
-    color: #424A60;
-  }
-  .text {
-    font-size: 20rpx;
-  }
   .test-container {
-    margin: 0 10rpx 10rpx 10rpx;
-    border: 1rpx solid #ccc;
-    border-radius: 5rpx;
-    box-shadow: 5rpx 5rpx 5rpx #888888;
+    width: 100%;
+    height: 100%;
+    background-color: #371C5D;
+    color: white;
+    text-align: center;
+  }
+  .card {
+    margin: 20rpx auto;
+    width: 90%;
+    height: 200rpx;
+    background-color: #fff;
+    border-radius: 30rpx;
+    padding: 20rpx;
+    color: #000;
+    background-color: #FFFFFF;
+  }
+  .thumb {
+    display: inline-block;
+    width: 200rpx;
+    height: 200rpx;
+    float: left;
+    vertical-align: middle;
+  }
+
+  .text-container {
+    text-align: left;
+    font-size: 28rpx;
+  }
+  .icon {
+    width: 30rpx;
+    height: 30rpx;
+    vertical-align: middle;
   }
 </style>

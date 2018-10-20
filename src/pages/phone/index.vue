@@ -2,13 +2,7 @@
   <div class="container">
     <div class="form-container">
       <div class="form-item">
-        <input type="text" placeholder="请输入旧密码">
-      </div>
-      <div class="form-item">
-        <input type="password" placeholder="请输入新密码">
-      </div>
-      <div class="form-item">
-        <input type="password" placeholder="确认密码">
+        <input type="text" placeholder="请输入手机">
       </div>
       <div class="form-item">
         <button type="default" hover-class="button-hover">确认</button>

@@ -1,43 +1,33 @@
 <template>
-  <div>
-    <van-panel :title="'题目：' + (key + 1) + '/' + tableData.length" :desc="'得分：' + score"></van-panel>
-    <view v-if="tableData.length">
-      <van-panel
-        :title="question.title"
-        :desc="question.score + '分'"
-        :status="question.status"
-      >
-        <div class="option-container">
-          <view v-for="option in question.options" :key="option.id" class="option-item">
-            <van-button
-              :block="true"
-              size="large"
-              @click="onSubmit(question.id, option.id)"
-              :type="option.status"
-            >{{ option.content }}
-            </van-button>
-          </view>
-        </div>
-      </van-panel>
-    </view>
-    <view v-else class="title">
-      咦？该试卷没有任何题目
-    </view>
+  <div class="paper-container">
+    <div class="question-container">
+      <div class="header">
+        <img src="/static/icons/single_color.png" class="icon">
+        <h2 class="question-tip">1 / 10</h2>
+      </div>
+      <h2 class="question-title">以下哪个成语是"风平浪静"的反义词？</h2>
+      <h2 class="question-tip">5 分</h2>
+      <h3 class="question-option selected">天下太平</h3>
+      <h3 class="question-option error">轩然大波</h3>
+      <h3 class="question-option success">平安无事</h3>
+    </div>
+    <div class="footer">
+      <div class="footer-item">
+        <img src="/static/icons/user_color.png" class="small-icon">
+        1000
+      </div>
+      <div class="footer-item">
+        <img src="/static/icons/accuracy_color.png" class="small-icon">
+        50%
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
     onShow() {
-      wx.showLoading({ title: "努力获取试卷中..." });
-      this.testId = this.$root.$mp.query.testId;
-      this.$http.get(`/tests/${this.testId}/start`).then(response => {
-        this.tableData = response.data;
-        wx.hideLoading();
-      }).catch(err => {
-        console.log(err);
-        wx.hideLoading();
-      });
+    
     },
     data() {
       return {
@@ -48,62 +38,82 @@
       };
     },
     computed: {
-      question() {
-        return this.tableData[this.key];
-      }
+    
     },
     methods: {
-      onSubmit(questionId, optionId) {
-        wx.showLoading({ title: "提交答案中..." });
-        this.$http.post(`/tests/${this.testId}/questions`, {
-          question_id: questionId,
-          answer: [optionId]
-        }).then(response => {
-          this.score = this.score + response.score;
-          if (response.is_right) {
-            this.question.options.find(item => item.id === optionId).status = "primary";
-          } else {
-            this.question.options.find(item => item.id === optionId).status = "danger";
-            response.question.answer.forEach(id => {
-              this.question.options.find(item => item.id === id).status = "primary";
-            });
-          }
-        }).catch(err => {
-          console.log(err);
-        });
-        wx.hideLoading();
-        setTimeout(() => {
-          if (this.tableData.length === (this.key + 1)) {
-            wx.showLoading({ title: "所有题目已完成" });
-            wx.navigateTo({ url: "/pages/testResults/main" });
-          } else {
-            this.key = this.key + 1;
-          }
-        }, 1500);
-      }
+    
     }
   };
 </script>
 
 <style>
-  .title {
-    text-align: center;
-    color: #424A60;
-  }
-  
-  .option-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
-    align-content: center;
-    margin-top: 15 rpx;
+  .paper-container {
     width: 100%;
+    height: 100%;
+    background-color: #371C5D;
   }
-  .option-item {
-    display: block;
-    width: 95%;
-    margin-top: 20rpx;
+  .question-container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 20rpx;
+    padding: 20rpx;
+  }
+  .header {
+    text-align: center;
+  }
+  .footer {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 30rpx;
+    color: #A6A6A6;
+    padding: 20rpx;
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer-item {
+    width: 40%;
+    height: 50rpx;
+    background-color: #fff;
+    border-radius: 50rpx;
+    padding: 20rpx;
+  }
+  .small-icon {
+    width: 25rpx;
+    height: 25rpx;
+  }
+  .icon {
+    width: 50rpx;
+    height: 50rpx;
+    padding: 20rpx;
+    border: 5rpx solid #ccc;
+    border-radius: 50rpx;
+  }
+  .question-title {
+    text-align: left;
+  }
+  .question-option {
+    margin-top: 30rpx;
+    text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 20rpx;
+    padding: 20rpx;
+  }
+  .question-tip {
+    text-align: center;
+    font-size: 24rpx;
+  }
+  .selected {
+    background-color: #371C5D;
+    color: #fff;
+  }
+  .error {
+    background-color: #D34B66;
+    color: #fff;
+  }
+  .success {
+    background-color: #50B7AD;
+    color: #fff;
   }
 </style>
