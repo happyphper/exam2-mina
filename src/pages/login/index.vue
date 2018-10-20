@@ -1,84 +1,81 @@
 <template>
-  <div class="login-container">
-    <input type="text" placeholder="请输入手机/学号" class="input-container">
-    <input type="password" placeholder="请输入密码" class="input-container">
-    <button type="default" hover-class="button-hover"> 登录 </button>
+  <div class="container">
+    <div class="login-container">
+      <div class="form-item">
+        <input type="text" v-model="form.username" placeholder="请输入手机/学号" class="input-container">
+      </div>
+      <div class="form-item">
+        <input type="password" v-model="form.password" placeholder="请输入密码" class="input-container">
+      </div>
+      <div class="form-item">
+        <button type="default" hover-class="button-hover" @click="onSubmit"> 登录 </button>
+      </div>
+    </div>
+    <van-notify id="login-notify" />
   </div>
 </template>
 
 <script>
-  import Toast from "@/../static/vant/toast/toast";
   import Notify from '@/../static/vant/notify/notify';
   
   export default {
     data() {
       return {
-        username: "",
-        password: ""
+        form: {
+          username: "",
+          password: ""
+        }
       };
     },
     methods: {
-      onClickIcon() {
-        Toast("初始密码：123456");
-      },
       onSubmit() {
-        Toast.loading({
-          duration: 0,
-          forbidClick: true,
-          message: '验证',
-          loadingType: 'spinner',
-          selector: '#login-toast',
-        });
-        this.$http.post('/auth/login', {
-          username: this.username,
-          password: this.password
+        if (!this.form.username || !this.form.password) {
+          Notify({
+            text: '账户/密码必填',
+            duration: 1000,
+            selector: '#login-notify',
+            backgroundColor: '#D65048'
+          });
+        }
+        this.$http.post('/auth/login', this.form).then(response => {
+          console.log(response);
+          wx.setStorageSync('token', response)
+          console.log('here')
+          return this.$http.get('/auth/me', { include: 'group' })
         }).then(response => {
-          wx.setStorageSync('token', response.access_token)
-          this.password = null
-          wx.switchTab({ url: '/pages/index/main' })
-        }).catch((err) => {
-          Toast.clear()
-          if (err.response.status === 422) {
-            const values = Object.values(err.response.data.errors);
+          wx.setStorageSync('user', response)
+          wx.switchTab({ url: '/pages/home/main' })
+        }).catch(err => {
+          if (!err.response) {
             Notify({
-              text: values.join(';'),
-              duration: 1500,
-              selector: '#login-error-notify',
-              backgroundColor: '#CB4B45'
+              text: '未知错误',
+              duration: 1000,
+              selector: '#login-notify',
+              backgroundColor: '#D65048'
             });
           } else {
             Notify({
-              text: err.response.data.message || '错误',
-              duration: 1500,
-              selector: '#login-error-notify',
-              backgroundColor: '#CB4B45'
+              text: err.response.data.message,
+              duration: 1000,
+              selector: '#login-notify',
+              backgroundColor: '#D65048'
             });
           }
         })
-      },
-      onInputUsername(event) {
-        this.username = event.mp.detail
-      },
-      onInputPassword(event) {
-        this.password = event.mp.detail
       }
     }
   }
 </script>
 <style scoped>
-  .login-container {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #371C5D;
-    color: white;
-    font-size: 30rpx;
+  .form-item {
+    margin-bottom: 20rpx;
+    text-align: left;
+    font-size: 26rpx;
   }
   .input-container {
     background-color: #FFFFFF;
     width: 80%;
-    margin: 50rpx auto;
+    margin: 0 auto;
     padding:15rpx;
     border-radius: 98rpx;
     color: #000000;
@@ -88,12 +85,10 @@
     margin-top: 20rpx;
     background-color: #D5D0DD;
     color: #5F4C7E;
-    border-radius: 98rpx; 
-  }
-  button:after {
     border-radius: 98rpx;
   }
-  .button-hover {
-    background-color: #F7C443;
+
+  button:after {
+    border-radius: 98rpx;
   }
 </style>

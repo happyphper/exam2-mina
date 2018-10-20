@@ -3,9 +3,6 @@
   "navigationBarBackgroundColor": "#371C5D",
   "navigationBarTextStyle":"white",
   "usingComponents": {
-    "van-field": "/static/vant/field/index",
-    "van-button": "/static/vant/button/index",
-    "van-toast": "/static/vant/toast/index",
     "van-notify": "/static/vant/notify/index"
   }
 }

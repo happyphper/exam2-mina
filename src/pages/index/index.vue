@@ -1,12 +1,15 @@
 <template>
-  <div class="index-container">
+  <div class="container">
+    <div class="logo">
+      <img src="/static/images/lhdx_logo.png" class="logo">
+    </div>
     <div class="title-container">
       <h1 class="title">北京联合大学</h1>
       <h2 class="subtitle">考评小程序</h2>
     </div>
     <div class="button-container">
-      <a>手机号/学号登录</a>
-      <a class="wechat-login">
+      <a @click="handlePhoneLogin">手机号/学号登录</a>
+      <a @click="handleWechatLogin" class="wechat-login">
         <img src="/static/icons/wechat.png" class="wechat-icon">
         微信登录
         </a>
@@ -14,6 +17,7 @@
     <div class="footer">
       @2018 北京联合大学
     </div>
+    <van-toast id="index-toast"></van-toast>
   </div>
 </template>
 
@@ -22,52 +26,37 @@
   
   export default {
     onShow() {
-      wx.switchTab({ url: '/pages/home/main' })
-      // if (!wx.getStorageSync("token")) {
-      //   wx.redirectTo({
-      //     url: "/pages/login/main"
-      //   });
-      // } else if (!wx.getStorageSync("user")) {
-      //   Toast.loading({
-      //     duration: 0,
-      //     forbidClick: true,
-      //     message: '读取信息',
-      //     loadingType: 'spinner',
-      //     selector: '#home-toast',
-      //   });
-      //   this.$http.get("/auth/me", { include: 'group' }).then(response => {
-      //     wx.setStorageSync("user", response);
-      //     wx.switchTab({ url: '/pages/tests/main' })
-      //   }).catch(err => {
-      //     Toast.clear()
-      //     Notify({
-      //       text: err.response.data.message || '错误',
-      //       duration: 1500,
-      //       selector: '#home-error-notify',
-      //       backgroundColor: '#ff4534'
-      //     });
-      //   });
-      // } else {
-      //   wx.switchTab({ url: '/pages/tests/main' })
-      // }
+      if (wx.getStorageSync('token') || wx.getStorageSync('user')) {
+        wx.switchTab({ url: '/pages/home/main' })
+      }
     },
     data() {
       return {};
     },
-    methods: {}
+    methods: {
+      handlePhoneLogin() {
+        wx.navigateTo({ url: '/pages/login/main' })
+      },
+      handleWechatLogin() {
+        Toast({
+          selector:"#index-toast",
+          type:"fail",
+          message:"暂不支持微信登录"
+        })
+      }
+    }
   };
 </script>
 <style scoped>
-  .index-container {
-    width: 100%;
-    height: 100%;
-    background-color: #371C5D;
-    color: white;
-    text-align: center;
+  .logo{
+    width: 240rpx;
+    height: 240rpx;
+    margin: 0 auto;
+    border-radius: 150rpx;
   }
   .title-container {
     position: relative;
-    top: 30%;
+    top: 10%;
   }
   .title {
       font-size: 70rpx;
@@ -77,7 +66,7 @@
   }
   .button-container {
     position: relative;
-    top:40%;
+    top:20%;
     text-align: center;
     color: white;
     font-size: 30rpx;

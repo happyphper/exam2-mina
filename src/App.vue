@@ -22,8 +22,7 @@
     -o-transition: width 2s;
   }
   
-  .app-container {
-    background: #F7F7F7;
-    height: 100%;
+  .button-hover {
+    background-color: #F7C443;
   }
 </style>
