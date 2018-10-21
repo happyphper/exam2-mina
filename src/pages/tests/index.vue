@@ -49,10 +49,9 @@ import Notify from '@/../static/vant/notify/notify';
 
 export default {
   mounted() {
-    this.handleRefresh()
-  },
-  onShow() {
-    this.handleRefresh()
+    if (!this.tableData.length) {
+      this.handleRefresh()
+    }
   },
   data () {
     return {
@@ -65,6 +64,7 @@ export default {
         this.tableData = response.data
         wx.stopPullDownRefresh()
       }).catch(err => {
+        wx.stopPullDownRefresh()
         if (!err.response) {
           Notify({
             text: '未知错误',
@@ -91,7 +91,6 @@ export default {
             backgroundColor: '#D65048'
           });
         }
-        wx.stopPullDownRefresh()
       })
     },
     handleRefresh() {
@@ -99,7 +98,7 @@ export default {
     },
     handleStartTest(test) {
       if (test.result && test.result.is_finished) {
-        wx.navigateTo({ url: '/pages/result/main' })
+        wx.navigateTo({ url: '/pages/result/main?testId=' + test.id })
       } else {
         wx.navigateTo({ url: `/pages/paper/main?testId=${test.id}` })
       }

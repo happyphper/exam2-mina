@@ -39,8 +39,10 @@
   import Notify from '@/../static/vant/notify/notify';
   
   export default {
-    onShow() {
-      this.getResults()
+    mounted() {
+      if (!this.tableData.length || this.$mp.query.testId) {
+        this.getResults()
+      }
     },
     data() {
       return {
@@ -55,7 +57,9 @@
           include: 'course,test'
         }).then(response => {
           this.tableData = response.data
+          wx.stopPullDownRefresh()
         }).catch(err => {
+          wx.stopPullDownRefresh()
           if (!err.response) {
             Notify({
               text: '未知错误',
@@ -92,7 +96,10 @@
           }
         })
       }
-    }
+    },
+    onPullDownRefresh(){
+      this.getResults()
+    },
   };
 </script>
 

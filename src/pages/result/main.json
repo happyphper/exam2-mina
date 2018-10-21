@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "考试记录",
-  "backgroundColor": "#ccc",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
   "usingComponents": {
     "van-notify": "/static/vant/notify/index"
   }

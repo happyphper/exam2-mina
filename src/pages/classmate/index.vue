@@ -22,7 +22,9 @@
   
   export default {
     mounted() {
-      this.getClassmates()
+      if (!this.tableData.length) {
+        this.getClassmates()
+      }
     },
     data() {
       return {
@@ -33,7 +35,9 @@
       getClassmates() {
         this.$http.get('/classmates').then(response => {
           this.tableData = response.data
+          wx.stopPullDownRefresh()
         }).catch(err => {
+          wx.stopPullDownRefresh()
           if (!err.response) {
             Notify({
               text: '未知错误',
@@ -62,7 +66,10 @@
           }
         })
       }
-    }
+    },
+    onPullDownRefresh(){
+      this.getClassmates()
+    },
   };
 </script>
 
