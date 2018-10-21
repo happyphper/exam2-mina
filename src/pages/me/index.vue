@@ -4,7 +4,7 @@
       <van-cell is-link>
         <view slot="title">
           <div class="header-wrapper">
-            <image :src="user.avatar || '/static/images/avatar.png'" class="avatar"></image>
+            <image :src="avatar" class="avatar"></image>
             <div class="title">
               <p>{{ user.name }}</p>
               <p>{{ user.student_id }}</p>
@@ -15,8 +15,8 @@
     </van-cell-group>
   
     <van-cell-group custom-class="margin-top">
-      <van-cell v-if="!user || !user.group" title="没有班级" icon="points-mall" :border="true"></van-cell>
-      <van-cell v-else :title="user && user.group && user.group.name" icon="points-mall" :border="true" is-link url="/pages/classmate/main"/>
+      <van-cell v-if="!group" title="没有班级" icon="points-mall" :border="true"></van-cell>
+      <van-cell v-else :title="group.name" icon="points-mall" :border="true" is-link url="/pages/classmate/main"/>
     </van-cell-group>
     
     <van-cell-group>
@@ -40,19 +40,23 @@
 <script>
 export default {
   mounted() {
-    this.user = wx.getStorageSync('user')
+  
   },
-  data() {
-    return {
-      user: {
-        group: {}
-      }
+  computed: {
+    user() {
+      return wx.getStorageSync('user')
+    },
+    avatar() {
+      return this.user.avatar ? this.user.avatar : '/static/images/avatar.png';
+    },
+    group() {
+      return this.user.group ? this.user.group : null
     }
   },
   methods: {
     handleLogout() {
       wx.clearStorage()
-      wx.redirectTo({ url: '/pages/login/main' })
+      wx.redirectTo({ url: '/pages/index/main' })
     }
   }
 }
