@@ -1,24 +1,27 @@
 <template>
-  <div class="paper-container">
-    <div class="question-container">
+  <div class="container">
+    <div class="question-container" v-if="!question">
+      <h2>题目加载中...</h2>
+    </div>
+    <div class="question-container" v-if="question">
       <div class="header">
         <img src="/static/icons/single_color.png" class="icon">
-        <h2 class="question-tip">1 / 10</h2>
+        <h2 class="question-tip">{{ key + 1 }} / {{ tableData.length }}</h2>
       </div>
-      <h2 class="question-title">以下哪个成语是"风平浪静"的反义词？</h2>
-      <h2 class="question-tip">5 分</h2>
-      <h3 class="question-option selected">天下太平</h3>
-      <h3 class="question-option error">轩然大波</h3>
-      <h3 class="question-option success">平安无事</h3>
+      <h2 class="question-title">{{ question.title }}</h2>
+      <h2 class="question-tip">{{ question.score }}</h2>
+      <div v-for="option in question.options" :key="option.id">
+        <h3 class="question-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">{{ option.content }}</h3>
+      </div>
     </div>
     <div class="footer">
       <div class="footer-item">
         <img src="/static/icons/user_color.png" class="small-icon">
-        1000
+        {{ answeringCount }}
       </div>
       <div class="footer-item">
         <img src="/static/icons/accuracy_color.png" class="small-icon">
-        50%
+        {{ question.accuracy }}
       </div>
     </div>
   </div>
@@ -27,37 +30,95 @@
 <script>
   export default {
     onShow() {
-    
+      this.testId = this.$mp.query.testId
+      this.getTest()
     },
     data() {
       return {
+        testId: null,
+        tableData: [],
+        answeringCount: 0,
         key: 0,
         score: 0,
-        testId: null,
-        tableData: []
+        question: null,
+        disabled: false
       };
     },
     computed: {
-    
+      question() {
+        return this.tableData[this.key]
+      }
     },
     methods: {
-    
+      getTest() {
+        this.$http.get(`/tests/${this.testId}/start`, { include: 'result' }).then(response => {
+          this.tableData = response.data
+          this.answeringCount = response.meta.answering_count
+          this.question = this.tableData[this.key]
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      toggleQuestion() {
+        this.key = this.key + 1
+        if (this.tableData.length >= this.key) {
+          setTimeout(() => {
+            wx.redirectTo({ url: '/pages/result/main' })
+          }, 1500)
+        } else {
+          setTimeout(() => {
+            this.question = this.tableData[this.key]
+          }, 1500)
+        }
+      },
+      handleSelectOption(option) {
+        if (this.disabled) {
+          return false
+        }
+        this.disabled = true
+        option.selected = true
+        this.$http.post(`/tests/${this.testId}/questions`, {
+          question_id: this.question.id,
+          answer: [option.id]
+        }).then(response => {
+          if (response.question.type === 'single') {
+            // 单选
+            const answer = response.question.answer[0]
+            this.question.options.map(item => {
+              // 设置正确答案和错误答案
+              if (item.id == answer) {
+                item.status = 1
+              } else if (item.id === option.id && answer != option.id) {
+                item.status = 2
+              } else {
+                item.status = 0
+              }
+            })
+          } else {
+            // 多选
+            const answer = response.question.answer
+            this.question.options.map(item => {
+              item.status = answer.includes(option.id) ? 1 : 0
+            })
+          }
+          this.toggleQuestion()
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      
     }
   };
 </script>
 
 <style>
-  .paper-container {
-    width: 100%;
-    height: 100%;
-    background-color: #371C5D;
-  }
   .question-container {
     width: 80%;
     margin: 0 auto;
     background-color: #ffffff;
     border-radius: 20rpx;
     padding: 20rpx;
+    color: #000;
   }
   .header {
     text-align: center;

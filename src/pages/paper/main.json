@@ -3,10 +3,5 @@
   "navigationBarBackgroundColor": "#371C5D",
   "navigationBarTextStyle":"white",
   "usingComponents": {
-    "van-panel": "/static/vant/panel/index",
-    "van-button": "/static/vant/button/index",
-    "van-toast": "/static/vant/toast/index",
-    "van-row": "/static/vant/row/index",
-    "van-col": "/static/vant/col/index"
   }
 }

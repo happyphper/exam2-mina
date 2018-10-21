@@ -1,34 +1,39 @@
 <template>
   <div class="container">
-    <div class="result-container">
-      <p>
-        <img src="/static/icons/course.png" class="icon">
-        旅游文化
-      </p>
-      <p>
-        <img src="/static/icons/test.png" class="icon">
-        旅游专业第一次考试
-      </p>
-      <p>
-        <img src="/static/icons/grade.png" class="icon">
-        100</p>
-      <p>
-        <img src="/static/icons/question.png" class="icon">
-        10 / 10</p>
-      <p>
-        <img src="/static/icons/time.png" class="icon">
-        10 秒
-      </p>
-      <p>
-        <img src="/static/icons/date.png" class="icon">
-        2018-12-12 08:00:00
-      </p>
+    <div v-if="tableData.length" v-for="result in tableData" :key="result.id" class="margin-bottom">
+      <div class="result-container">
+        <p>
+          <img src="/static/icons/course.png" class="icon">
+          {{ result.course.title }}
+        </p>
+        <p>
+          <img src="/static/icons/test.png" class="icon">
+          {{ result.test.title }}
+        </p>
+        <p>
+          <img src="/static/icons/grade.png" class="icon">
+          {{ result.score }} 分</p>
+        <p>
+          <img src="/static/icons/question.png" class="icon">
+          {{ result.wrong_count }} / {{ result.questions_count }}（正确/题目）</p>
+        <p>
+          <img src="/static/icons/time.png" class="icon">
+          用时 {{ result.consumed_seconds }} 秒
+        </p>
+        <p>
+          <img src="/static/icons/date.png" class="icon">
+          完成于 {{ result.updated_at }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   export default {
+    onShow() {
+      this.getResults()
+    },
     data() {
       return {
         key: 0,
@@ -36,16 +41,26 @@
         tableData: []
       };
     },
-    
     methods: {
-    
+      getResults() {
+        this.$http.get('/test-results', {
+          include: 'course,test'
+        }).then(response => {
+          this.tableData = response.data
+        }).catch(err => {
+          console.log(err)
+        })
+      }
     }
   };
 </script>
 
 <style>
+  .margin-bottom {
+    margin-bottom: 10rpx;
+  }
   .result-container {
-    margin:0 auto;
+    margin: 0 auto;
     width: 90%;
     background-color: #fff;
     border-radius: 30rpx;
