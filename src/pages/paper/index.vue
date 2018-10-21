@@ -14,7 +14,7 @@
         <h3 class="question-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">{{ option.content }}</h3>
       </div>
     </div>
-    <div class="footer">
+    <div class="footer" v-if="question">
       <div class="footer-item">
         <img src="/static/icons/user_color.png" class="small-icon">
         {{ answeringCount }}
