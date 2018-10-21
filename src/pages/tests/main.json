@@ -3,7 +3,6 @@
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
   "usingComponents": {
-    "van-notice-bar": "/static/vant/notice-bar/index",
     "van-row": "/static/vant/row/index",
     "van-col": "/static/vant/col/index",
     "van-notify": "/static/vant/notify/index",

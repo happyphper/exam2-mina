@@ -1,13 +1,8 @@
 <template>
   <div class="container">
-    <van-notice-bar
-      mode="closeable"
-      text="当页面显示为空时，则今日暂无考试，不过你可以尝试下拉刷新，重新获取"
-    />
-    
     <h2 class="tip" v-show="!tableData.length">🤥 今日无考试</h2>
     
-    <div v-if="tableData.length" v-for="test in tableData" :key="test.id">
+    <div v-if="tableData.length" v-for="test in tableData" :key="test.id" class="test-container">
       <div class="card" @click="handleStartTest(test)">
         <van-row>
           <van-col span="8">
@@ -100,8 +95,11 @@ export default {
 </script>
 
 <style>
+  test-container {
+    margin-bottom: 10rpx;
+  }
   .card {
-    margin: 20rpx auto;
+    margin: 0 auto;
     width: 90%;
     height: 200rpx;
     border-radius: 30rpx;
@@ -128,7 +126,7 @@ export default {
   }
   .tip {
     width: 80%;
-    margin: 20rpx auto;
+    margin: 0 auto;
     background-color: #fff;
     border-radius: 30rpx;
     padding: 20rpx;

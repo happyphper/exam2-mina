@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <div v-if="!tableData.length">
+      <div class="result-container">
+        您还没有考试记录
+      </div>
+    </div>
     <div v-if="tableData.length" v-for="result in tableData" :key="result.id" class="margin-bottom">
       <div class="result-container">
         <p>

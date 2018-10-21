@@ -32,6 +32,10 @@
     </van-cell-group>
     
     <van-cell-group custom-class="margin-top">
+      <van-cell title="绑定手机" icon="phone" :border="true" is-link url="/pages/phone/main"/>
+    </van-cell-group>
+    
+    <van-cell-group custom-class="margin-top">
       <van-cell title="退出登录" icon="close" :border="true" @click="handleLogout" />
     </van-cell-group>
   </div>
@@ -56,7 +60,7 @@ export default {
   methods: {
     handleLogout() {
       wx.clearStorage()
-      wx.redirectTo({ url: '/pages/index/main' })
+      wx.reLaunch({ url: '/pages/index/main' });
     }
   }
 }

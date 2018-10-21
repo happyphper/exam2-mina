@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <van-notice-bar
+      mode="closeable"
+      text="当页面显示为空时，则今日暂无考试，不过你可以尝试下拉刷新，重新获取"
+    />
     <div class="logo">
       <img src="/static/images/lhdx_logo.png" class="logo">
     </div>

@@ -8,7 +8,7 @@
         <input type="password" v-model="form.password" placeholder="请输入密码" class="input-container">
       </div>
       <div class="form-item">
-        <button type="default" hover-class="button-hover" @click="onSubmit"> 登录 </button>
+        <button type="default" :loading="loading" hover-class="button-hover" @click="onSubmit"> 登录 </button>
       </div>
     </div>
     <van-notify id="login-notify" />
@@ -24,7 +24,8 @@
         form: {
           username: "",
           password: ""
-        }
+        },
+        loading: false
       };
     },
     methods: {
@@ -37,6 +38,7 @@
             backgroundColor: '#D65048'
           });
         }
+        this.loading = true
         this.$http.post('/auth/login', this.form).then(response => {
           console.log(response);
           wx.setStorageSync('token', response)
@@ -46,6 +48,7 @@
           wx.setStorageSync('user', response)
           wx.switchTab({ url: '/pages/home/main' })
         }).catch(err => {
+          this.loading = false
           if (!err.response) {
             Notify({
               text: '未知错误',
