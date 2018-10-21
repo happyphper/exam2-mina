@@ -74,6 +74,7 @@ export default {
             backgroundColor: '#D65048'
           });
           setTimeout(() => {
+            wx.clearStorage()
             wx.reLaunch({ url: '/pages/index/main' })
           }, 1000)
         } else {
