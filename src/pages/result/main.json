@@ -2,7 +2,6 @@
   "navigationBarTitleText": "考试记录",
   "backgroundColor": "#ccc",
   "usingComponents": {
-    "van-panel": "/static/vant/panel/index",
-    "van-button": "/static/vant/button/index"
+    "van-notify": "/static/vant/notify/index"
   }
 }

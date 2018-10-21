@@ -3,5 +3,6 @@
   "navigationBarBackgroundColor": "#371C5D",
   "navigationBarTextStyle":"white",
   "usingComponents": {
+    "van-notify": "/static/vant/notify/index"
   }
 }

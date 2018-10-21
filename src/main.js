@@ -11,9 +11,6 @@ fly.config.baseURL = baseURL;
 
 fly.interceptors.request.use((config, promise) => {
   const token = wx.getStorageSync('token');
-  if (!token) {
-    wx.redirectTo({ url: '/pages/home/main' })
-  }
   //给所有请求添加自定义header
   config.headers["Authorization"] = "Bearer " + token.access_token;
   return config;

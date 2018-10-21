@@ -66,6 +66,16 @@ export default {
             selector: '#test-notify',
             backgroundColor: '#D65048'
           });
+        } else if (err.response.status === 401) {
+          Notify({
+            text: '身份验证过期',
+            duration: 1000,
+            selector: '#test-notify',
+            backgroundColor: '#D65048'
+          });
+          setTimeout(() => {
+            wx.reLaunch({ url: '/pages/index/main' })
+          }, 1000)
         } else {
           Notify({
             text: err.response.data.message,

@@ -62,6 +62,16 @@
               selector: '#phone-notify',
               backgroundColor: '#D65048'
             });
+          } else if (err.response.status === 401) {
+            Notify({
+              text: '身份验证过期',
+              duration: 1000,
+              selector: '#phone-notify',
+              backgroundColor: '#D65048'
+            });
+            setTimeout(() => {
+              wx.reLaunch({ url: '/pages/index/main' })
+            }, 1000)
           } else if (err.response.status === 422) {
             const messgae = Object.values(err.response.data.errors).join(';')
             Notify({

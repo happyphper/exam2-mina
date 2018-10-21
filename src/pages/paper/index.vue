@@ -24,10 +24,13 @@
         {{ question.accuracy }}
       </div>
     </div>
+    <van-notify id="paper-notify" />
   </div>
 </template>
 
 <script>
+  import Notify from '@/../static/vant/notify/notify';
+  
   export default {
     onShow() {
       this.testId = this.$mp.query.testId
@@ -56,7 +59,31 @@
           this.answeringCount = response.meta.answering_count
           this.question = this.tableData[this.key]
         }).catch(err => {
-          console.log(err)
+          if (!err.response) {
+            Notify({
+              text: '未知错误',
+              duration: 1000,
+              selector: '#paper-notify',
+              backgroundColor: '#D65048'
+            });
+          } else if (err.response.status === 401) {
+            Notify({
+              text: '身份验证过期',
+              duration: 1000,
+              selector: '#paper-notify',
+              backgroundColor: '#D65048'
+            });
+            setTimeout(() => {
+              wx.reLaunch({ url: '/pages/index/main' })
+            }, 1000)
+          } else {
+            Notify({
+              text: err.response.data.message,
+              duration: 1000,
+              selector: '#paper-notify',
+              backgroundColor: '#D65048'
+            });
+          }
         })
       },
       toggleQuestion() {

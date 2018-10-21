@@ -43,9 +43,6 @@
 
 <script>
 export default {
-  mounted() {
-  
-  },
   computed: {
     user() {
       return wx.getStorageSync('user')

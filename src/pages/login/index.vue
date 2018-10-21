@@ -40,9 +40,7 @@
         }
         this.loading = true
         this.$http.post('/auth/login', this.form).then(response => {
-          console.log(response);
           wx.setStorageSync('token', response)
-          console.log('here')
           return this.$http.get('/auth/me', { include: 'group' })
         }).then(response => {
           wx.setStorageSync('user', response)

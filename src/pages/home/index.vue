@@ -1,5 +1,9 @@
 <template>
-  <div class="home-container">
+  <div class="container">
+    <van-notice-bar
+      mode="closeable"
+      text="当页面显示为空时，则今日暂无考试，不过你可以尝试下拉刷新，重新获取"
+    />
     <h1 class="page-title"> 考 评 统 计 </h1>
     <div class="test-container">
       <div class="avatar-container">
@@ -43,13 +47,6 @@
   };
 </script>
 <style scoped>
-  .home-container {
-    width: 100%;
-    height: 100%;
-    background-color: #371C5D;
-    color: white;
-    text-align: center;
-  }
   .page-title {
     font-size: 50rpx;
   }
