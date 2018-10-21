@@ -6,7 +6,7 @@
       <div class="card" @click="handleStartTest(test)">
         <van-row>
           <van-col span="8">
-            <img src="/static/images/test_thumb.jpeg" class="thumb">
+            <img src="/static/images/test_thumb.jpg" class="thumb">
           </van-col>
           <van-col span="16" class="text-container">
             <van-row>
@@ -24,9 +24,12 @@
               </van-col>
               <van-col span="24" class="test-time">
                 <img src="/static/icons/end.png" class="icon">
-                {{ test.end }}
+                {{ test.ended_at }}
               </van-col>
               <van-col span="24">
+                <van-tag type="primary" v-if="test.status === 'unstart'">未开考</van-tag>
+                <van-tag type="danger" v-else-if="test.status === 'end'">已结束</van-tag>
+                <van-tag type="success" v-else>已开考</van-tag>
                 <van-tag type="primary" v-if="!test.result">未答题</van-tag>
                 <van-tag type="danger" v-else-if="test.result && !test.result.is_finished">答题中</van-tag>
                 <van-tag type="success" v-else="test.result && test.result.is_finished">已完成</van-tag>
@@ -46,6 +49,9 @@ import Notify from '@/../static/vant/notify/notify';
 
 export default {
   mounted() {
+    this.handleRefresh()
+  },
+  onShow() {
     this.handleRefresh()
   },
   data () {

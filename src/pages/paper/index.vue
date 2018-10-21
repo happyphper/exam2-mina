@@ -6,7 +6,7 @@
     <div class="question-container" v-if="question">
       <div class="header">
         <img src="/static/icons/single_color.png" class="icon">
-        <h2 class="question-tip">{{ key + 1 }} / {{ tableData.length }}</h2>
+        <h2 class="question-tip">{{ finished_count }} / {{ tableData.length }}</h2>
       </div>
       <h2 class="question-title">{{ question.title }}</h2>
       <h2 class="question-tip">{{ question.score }}</h2>
@@ -42,6 +42,7 @@
         tableData: [],
         answeringCount: 0,
         key: 0,
+        finished_count: 0,
         score: 0,
         question: null,
         disabled: false
@@ -57,7 +58,7 @@
         this.$http.get(`/tests/${this.testId}/start`, { include: 'result' }).then(response => {
           this.tableData = response.data
           this.answeringCount = response.meta.answering_count
-          this.question = this.tableData[this.key]
+          this.initQuestion(response.data)
         }).catch(err => {
           if (!err.response) {
             Notify({
@@ -84,20 +85,42 @@
               selector: '#paper-notify',
               backgroundColor: '#D65048'
             });
+            setTimeout(() => {
+              wx.switchTab({ url: '/pages/tests/main' })
+            }, 500)
+          }
+        })
+      },
+      initQuestion(data) {
+        // 当题目已完成时，则跳过已答过题目
+        let question = data[this.key]
+        if (!question.result) {
+          this.question = question
+          return;
+        }
+        // 跳过题目
+        data.forEach((item, index) => {
+          if (item.result) {
+            this.finished_count = this.finished_count + 1
+          } else if (!item.result && !this.question) {
+            this.key = index
+            this.question = item
           }
         })
       },
       toggleQuestion() {
-        this.key = this.key + 1
-        if (this.tableData.length >= this.key) {
+        this.finished_count = this.finished_count + 1
+        // 题目答完时，结束考试
+        if (this.tableData.length >= this.finished_count) {
           setTimeout(() => {
             wx.redirectTo({ url: '/pages/result/main' })
           }, 1500)
-        } else {
-          setTimeout(() => {
-            this.question = this.tableData[this.key]
-          }, 1500)
+          return false;
         }
+        this.key += 1
+        setTimeout(() => {
+          this.question = this.tableData[this.key]
+        }, 1500)
       },
       handleSelectOption(option) {
         if (this.disabled) {
