@@ -2,22 +2,25 @@
   <div class="container">
     <div class="form-container">
       <div class="form-item">
-        <input type="text" placeholder="请输入旧密码">
+        <input type="password" v-model="form.old_password" placeholder="请输入旧密码">
       </div>
       <div class="form-item">
-        <input type="password" placeholder="请输入新密码">
+        <input type="password" v-model="form.password" placeholder="请输入新密码">
       </div>
       <div class="form-item">
-        <input type="password" placeholder="确认密码">
+        <input type="password" v-model="form.password_confirmation" placeholder="确认密码">
       </div>
       <div class="form-item">
-        <button type="default" hover-class="button-hover">确认</button>
+        <button type="default" hover-class="button-hover" :loading="loading" @click="onSubmit">确认</button>
       </div>
     </div>
+    <van-notify id="password-notify" />
   </div>
 </template>
 
 <script>
+  import Notify from '@/../static/vant/notify/notify';
+  
   export default {
     data() {
       return {
@@ -25,10 +28,43 @@
           old_password: "",
           password: "",
           password_confirmation: ""
-        }
+        },
+        loading: false
       };
     },
-    methods: {}
+    methods: {
+      onSubmit() {
+        this.loading = true
+        this.$http.put('/password', this.form).then(() => {
+          wx.clearStorage()
+          wx.reLaunch({ url: '/pages/index/main' });
+        }).catch(err => {
+          if (!err.response) {
+            Notify({
+              text: '未知错误',
+              duration: 1000,
+              selector: '#password-notify',
+              backgroundColor: '#D65048'
+            });
+          } else if (err.response.status === 422) {
+            const messgae = Object.values(err.response.data.errors).join(';')
+            Notify({
+              text: messgae,
+              duration: 1000,
+              selector: '#password-notify',
+              backgroundColor: '#D65048'
+            });
+          } else {
+            Notify({
+              text: err.response.data.message,
+              duration: 1000,
+              selector: '#password-notify',
+              backgroundColor: '#D65048'
+            });
+          }
+        })
+      }
+    }
   };
 </script>
 
