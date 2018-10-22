@@ -24,26 +24,69 @@
     <div class="footer">
       <button>排行榜</button>
     </div>
+    <van-notify id="home-notify" />
   </div>
 </template>
 
 <script>
+  import Notify from '@/../static/vant/notify/notify';
+  
   export default {
+    onShow() {
+      this.getDashboardStat()
+    },
+    data() {
+      return {
+        questionsCount: 0,
+        testsCount: 0
+      }
+    },
     computed: {
       user() {
         return wx.getStorageSync('user')
       },
       avatar() {
         return this.user.avatar ? this.user.avatar : '/static/images/avatar.png'
-      },
-      questionsCount() {
-        return this.user.meta.questions_count
-      },
-      testsCount() {
-        return this.user.meta.tests_count
       }
     },
-    methods: {}
+    methods: {
+      getDashboardStat() {
+        this.$http.get('/stats/dashboard').then(response => {
+          this.questionsCount = response.questions_count
+          this.testsCount = response.tests_count
+        }).catch(err => {
+          if (!err.response) {
+            Notify({
+              text: '未知错误',
+              duration: 1000,
+              selector: '#home-notify',
+              backgroundColor: '#D65048'
+            });
+          } else if (err.response.status === 401) {
+            Notify({
+              text: '身份验证过期',
+              duration: 1000,
+              selector: '#home-notify',
+              backgroundColor: '#D65048'
+            });
+            setTimeout(() => {
+              wx.clearStorage()
+              wx.reLaunch({ url: '/pages/index/main' })
+            }, 1000)
+          } else {
+            Notify({
+              text: err.response.data.message,
+              duration: 1000,
+              selector: '#home-notify',
+              backgroundColor: '#D65048'
+            });
+            setTimeout(() => {
+              wx.switchTab({ url: '/pages/tests/main' })
+            }, 500)
+          }
+        })
+      }
+    }
   };
 </script>
 <style scoped>
