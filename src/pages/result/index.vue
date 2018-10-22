@@ -17,10 +17,10 @@
         </p>
         <p>
           <img src="/static/icons/grade.png" class="icon">
-          {{ result.score }} 分</p>
+          {{ result.score }} / {{ result.total_score }} （得分/满分）</p>
         <p>
           <img src="/static/icons/question.png" class="icon">
-          {{ result.wrong_count }} / {{ result.questions_count }}（正确/题目）</p>
+          {{ result.right_count }} / {{ result.questions_count }}（正确/题目）</p>
         <p>
           <img src="/static/icons/time.png" class="icon">
           用时 {{ result.consumed_seconds }} 秒

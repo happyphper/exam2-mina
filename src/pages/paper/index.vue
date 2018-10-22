@@ -32,7 +32,7 @@
   import Notify from '@/../static/vant/notify/notify';
   
   export default {
-    onShow() {
+    mounted() {
       this.testId = this.$mp.query.testId
       this.getTest()
     },
@@ -111,16 +111,17 @@
       toggleQuestion() {
         this.finished_count = this.finished_count + 1
         // 题目答完时，结束考试
-        if (this.tableData.length >= this.finished_count) {
+        if (this.tableData.length <= this.finished_count) {
           setTimeout(() => {
             wx.redirectTo({ url: '/pages/result/main' })
           }, 1500)
           return false;
         }
         this.key += 1
+        this.disabled = false
         setTimeout(() => {
           this.question = this.tableData[this.key]
-        }, 1500)
+        }, 1000)
       },
       handleSelectOption(option) {
         if (this.disabled) {

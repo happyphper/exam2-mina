@@ -99,8 +99,10 @@ export default {
     handleStartTest(test) {
       if (test.result && test.result.is_finished) {
         wx.navigateTo({ url: '/pages/result/main?testId=' + test.id })
-      } else {
+      } else if (test.status === 'ongoing') {
         wx.navigateTo({ url: `/pages/paper/main?testId=${test.id}` })
+      } else {
+        return false;
       }
     }
   },
