@@ -9,9 +9,14 @@
         <h2 class="question-tip">{{ finished_count }} / {{ tableData.length }}</h2>
       </div>
       <h2 class="question-title">{{ question.title }}</h2>
-      <h2 class="question-tip">{{ question.score }}</h2>
+      <h2 class="question-tip">{{ question.score }} 分</h2>
       <div v-for="option in question.options" :key="option.id">
-        <h3 class="question-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">{{ option.content }}</h3>
+        <div v-if="option.type === 'image'">
+          <img :src="option.content" class="image-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">
+        </div>
+        <div v-else>
+          <h3 class="question-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">{{ option.content }}</h3>
+        </div>
       </div>
     </div>
     <div class="footer" v-if="question">
@@ -228,5 +233,14 @@
   .success {
     background-color: #50B7AD;
     color: #fff;
+  }
+  .image-option {
+    width: 100rpx;
+    height: 100rpx;
+    margin-top: 30rpx;
+    text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 20rpx;
+    padding: 20rpx;
   }
 </style>
