@@ -48,10 +48,8 @@
 import Notify from '@/../static/vant/notify/notify';
 
 export default {
-  mounted() {
-    if (!this.tableData.length) {
-      this.handleRefresh()
-    }
+  onShow() {
+    this.handleRefresh()
   },
   data () {
     return {

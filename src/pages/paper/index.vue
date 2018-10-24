@@ -37,7 +37,7 @@
   import Notify from '@/../static/vant/notify/notify';
   
   export default {
-    mounted() {
+    onShow() {
       this.testId = this.$mp.query.testId
       this.getTest()
     },
@@ -118,6 +118,13 @@
         // 题目答完时，结束考试
         if (this.tableData.length <= this.finished_count) {
           setTimeout(() => {
+            this.finished_count = 0
+            this.key = 0
+            this.answeringCount = 0
+            this.finished_count= 0
+            this.score = 0
+            this.question = null
+            this.disabled = false
             wx.redirectTo({ url: '/pages/result/main' })
           }, 1500)
           return false;
