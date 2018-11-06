@@ -1,7 +1,7 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/tests/main",
+    "pages/exams/main",
     "pages/me/main",
     "pages/classmate/main",
     "pages/login/main",
@@ -28,14 +28,14 @@
       {
         "pagePath": "pages/home/main",
         "text": "考评统计",
-        "iconPath": "/static/icons/test.png",
-        "selectedIconPath": "/static/icons/test_active.png"
+        "iconPath": "/static/icons/exam.png",
+        "selectedIconPath": "/static/icons/exam_active.png"
       },
       {
-        "pagePath": "pages/tests/main",
+        "pagePath": "pages/exams/main",
         "text": "今日考试",
-        "iconPath": "/static/icons/test.png",
-        "selectedIconPath": "/static/icons/test_active.png"
+        "iconPath": "/static/icons/exam.png",
+        "selectedIconPath": "/static/icons/exam_active.png"
       },
       {
         "pagePath": "pages/me/main",

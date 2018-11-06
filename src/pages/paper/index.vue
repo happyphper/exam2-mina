@@ -38,12 +38,12 @@
   
   export default {
     onShow() {
-      this.testId = this.$mp.query.testId
-      this.getTest()
+      this.examId = this.$mp.query.examId
+      this.getExam()
     },
     data() {
       return {
-        testId: null,
+        examId: null,
         tableData: [],
         answeringCount: 0,
         key: 0,
@@ -59,8 +59,8 @@
       }
     },
     methods: {
-      getTest() {
-        this.$http.get(`/tests/${this.testId}/start`, { include: 'result' }).then(response => {
+      getExam() {
+        this.$http.get(`/exams/${this.examId}/start`, { include: 'result' }).then(response => {
           this.tableData = response.data
           this.answeringCount = response.meta.answering_count
           this.initQuestion(response.data)
@@ -91,7 +91,7 @@
               backgroundColor: '#D65048'
             });
             setTimeout(() => {
-              wx.switchTab({ url: '/pages/tests/main' })
+              wx.switchTab({ url: '/pages/exams/main' })
             }, 500)
           }
         })
@@ -141,7 +141,7 @@
         }
         this.disabled = true
         option.selected = true
-        this.$http.post(`/tests/${this.testId}/questions`, {
+        this.$http.post(`/exams/${this.examId}/questions`, {
           question_id: this.question.id,
           answer: [option.id]
         }).then(response => {

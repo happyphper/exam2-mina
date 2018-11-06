@@ -5,7 +5,7 @@
       text="当页面显示为空时，则今日暂无考试，不过你可以尝试下拉刷新，重新获取"
     />
     <h1 class="page-title"> 考 评 统 计 </h1>
-    <div class="test-container">
+    <div class="exam-container">
       <div class="avatar-container">
         <img :src="avatar" class="avatar">
         <p>{{ user.name }}</p>
@@ -17,7 +17,7 @@
         </div>
         <div class="right-container">
           <h3>已参加考试</h3>
-          <h4>{{ testsCount }}</h4>
+          <h4>{{ examsCount }}</h4>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
     data() {
       return {
         questionsCount: 0,
-        testsCount: 0
+        examsCount: 0
       }
     },
     computed: {
@@ -53,7 +53,7 @@
       getDashboardStat() {
         this.$http.get('/stats/dashboard').then(response => {
           this.questionsCount = response.questions_count
-          this.testsCount = response.tests_count
+          this.examsCount = response.exams_count
         }).catch(err => {
           if (!err.response) {
             Notify({
@@ -81,7 +81,7 @@
               backgroundColor: '#D65048'
             });
             setTimeout(() => {
-              wx.switchTab({ url: '/pages/tests/main' })
+              wx.switchTab({ url: '/pages/exams/main' })
             }, 500)
           }
         })
@@ -93,7 +93,7 @@
   .page-title {
     font-size: 50rpx;
   }
-  .test-container {
+  .exam-container {
     margin: 10rpx auto;
     width: 80%;
     background: #fff;

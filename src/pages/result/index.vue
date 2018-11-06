@@ -12,8 +12,8 @@
           {{ result.course.title }}
         </p>
         <p>
-          <img src="/static/icons/test.png" class="icon">
-          {{ result.test.title }}
+          <img src="/static/icons/exam.png" class="icon">
+          {{ result.exam.title }}
         </p>
         <p>
           <img src="/static/icons/grade.png" class="icon">
@@ -40,21 +40,21 @@
   
   export default {
     mounted() {
-      if (!this.tableData.length || this.$mp.query.testId) {
+      if (!this.tableData.length || this.$mp.query.examId) {
         this.getResults()
       }
     },
     data() {
       return {
         key: 0,
-        testId: null,
+        examId: null,
         tableData: []
       };
     },
     methods: {
       getResults() {
-        this.$http.get('/test-results', {
-          include: 'course,test'
+        this.$http.get('/exam-results', {
+          include: 'course,exam'
         }).then(response => {
           this.tableData = response.data
           wx.stopPullDownRefresh()
