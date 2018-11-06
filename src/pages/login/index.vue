@@ -41,7 +41,7 @@
         this.loading = true
         this.$http.post('/auth/login', this.form).then(response => {
           wx.setStorageSync('token', response)
-          return this.$http.get('/auth/me', { include: 'group' })
+          return this.$http.get('/auth/me', { include: 'classroom' })
         }).then(response => {
           wx.setStorageSync('user', response)
           wx.switchTab({ url: '/pages/home/main' })

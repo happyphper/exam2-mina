@@ -43,7 +43,7 @@
         }
         this.loading = true
         this.$http.put('/phone', this.form).then(() => {
-          return this.$http.get('/auth/me', { include: 'group' })
+          return this.$http.get('/auth/me', { include: 'classroom' })
         }).then(response => {
           wx.setStorageSync('user', response)
           Notify({

@@ -15,8 +15,8 @@
     </van-cell-group>
   
     <van-cell-group custom-class="margin-top">
-      <van-cell v-if="!group" title="没有班级" icon="points-mall" :border="true"></van-cell>
-      <van-cell v-else :title="group.name" icon="points-mall" :border="true" is-link url="/pages/classmate/main"/>
+      <van-cell v-if="!classroom" title="没有班级" icon="points-mall" :border="true"></van-cell>
+      <van-cell v-else :title="classroom.title" icon="points-mall" :border="true" is-link url="/pages/classmate/main"/>
     </van-cell-group>
     
     <van-cell-group>
@@ -50,8 +50,8 @@ export default {
     avatar() {
       return this.user.avatar ? this.user.avatar : '/static/images/avatar.png';
     },
-    group() {
-      return this.user.group ? this.user.group : null
+    classroom() {
+      return this.user.classroom ? this.user.classroom : null
     }
   },
   methods: {
