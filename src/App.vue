@@ -12,6 +12,11 @@
     background-color: #371C5D;
     color: white;
     text-align: center;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
   
   /* this rule will be remove */

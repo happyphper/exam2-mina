@@ -12,7 +12,7 @@
       <h2 class="question-tip">{{ question.score }} 分</h2>
       <div v-for="option in question.options" :key="option.id">
         <div v-if="option.type === 'image'">
-          <img :src="option.content" class="image-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">
+          <img :src="option.content + '-small'" class="image-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">
         </div>
         <div v-else>
           <h3 class="question-option" :class="{ selected: option.selected, success: option.status === 1, error: option.status === 2 }" @click="handleSelectOption(option)">{{ option.content }}</h3>
@@ -242,8 +242,8 @@
     color: #fff;
   }
   .image-option {
-    width: 100rpx;
-    height: 100rpx;
+    width: 200rpx;
+    height: 200rpx;
     margin-top: 30rpx;
     text-align: left;
     border: 1px solid #ccc;
