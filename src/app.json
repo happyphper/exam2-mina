@@ -9,7 +9,8 @@
     "pages/result/main",
     "pages/password/main",
     "pages/home/main",
-    "pages/phone/main"
+    "pages/phone/main",
+    "pages/register/main"
   ],
   "window": {
     "navigationBarBackgroundColor": "#371C5D",
