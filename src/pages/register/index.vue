@@ -17,6 +17,12 @@
 import Notify from "@/../static/vant/notify/notify";
 
 export default {
+  onUnload() {
+    this.loading = false;
+  },
+  onHide() {
+    this.loading = false;
+  },
   data() {
     return {
       form: {
@@ -36,8 +42,8 @@ export default {
         });
       }
 
-      // this.loading = true;
-
+      this.loading = true;
+      const that = this;
       wx.login({
         success: res => {
           this.$http
@@ -45,16 +51,16 @@ export default {
               code: res.code,
               username: this.form.username
             })
-            .then((response) => {
+            .then(response => {
               wx.setStorageSync("token", response);
               return this.$http.get("/auth/me", { include: "classroom" });
-            }).then(response => {
-              console.log(response)
+            })
+            .then(response => {
               wx.setStorageSync("user", response);
               wx.switchTab({ url: "/pages/home/main" });
-            }).catch(err => {
-              console.log(err)
-              this.loading = false;
+            })
+            .catch(err => {
+              that.loading = false;
               if (!err.response) {
                 Notify({
                   text: "未知错误",
@@ -80,9 +86,9 @@ export default {
 
 <style>
 .tips {
-  font-size:28rpx;
-  padding:.5rem;
-  color:#ccc;
+  font-size: 28rpx;
+  padding: 0.5rem;
+  color: #ccc;
 }
 .form-item {
   margin-bottom: 20rpx;

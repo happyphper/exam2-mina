@@ -9,26 +9,39 @@
     </div>
     <div class="button-container">
       <a @click="handlePhoneLogin">手机号/学号登录</a>
-      <button open-type="getUserInfo" class="wechat-login" lang="zh_CN" @getuserinfo="handleAuthorize" :loading="loading" :disabled="loading">
+      <button
+        :disabled="loading"
+        :loading="loading"
+        @getuserinfo="handleAuthorize"
+        class="wechat-login"
+        lang="zh_CN"
+        open-type="getUserInfo"
+      >
         <img class="wechat-icon" src="/static/icons/wechat.png">
         <span>微信授权登录</span>
       </button>
     </div>
     <div class="footer">@2019 北京联合大学</div>
     <van-toast id="index-toast"></van-toast>
-    <van-notify id="wechat-login-notify" />
+    <van-notify id="wechat-login-notify"/>
   </div>
 </template>
 
 <script>
 import Toast from "@/../static/vant/toast/toast";
-import Notify from '@/../static/vant/notify/notify';
+import Notify from "@/../static/vant/notify/notify";
 
 export default {
   onShow() {
     if (wx.getStorageSync("token") || wx.getStorageSync("user")) {
       wx.switchTab({ url: "/pages/home/main" });
     }
+  },
+  onUnload() {
+    this.loading = false
+  },
+  onHide() {
+    this.loading = false
   },
   data() {
     return {
@@ -41,67 +54,63 @@ export default {
     },
     // 授权
     handleAuthorize() {
-      this.loading = true
-      const promise = new Promise((resolve, reject) => {
-        wx.getSetting({
-          success(res) {
-            if (!res.authSetting['scope.userInfo']) {
-              wx.authorize({
-                scope: 'scope.userInfo',
-                success() {
-                  resolve()
-                },
-                fail: function () {
-                  reject()
-                }
-              })
-            } else {
-              resolve()
-            }
-          }
-        })
-      })
+      this.loading = true;
+      const that = this
+      const login = this.handleWechatLogin;
+      const user = { nickname: "", avatar: "", gender: "" };
+      wx.getSetting({
+        success(res) {
+          if (!res.authSetting["scope.userInfo"]) {
+            wx.authorize({
+              scope: "scope.userInfo",
+              success() {
+                wx.getUserInfo({
+                  success(res) {
+                    const userInfo = res.userInfo;
+                    user.nickname = userInfo.nickName;
+                    user.avatar = userInfo.avatarUrl;
+                    user.gender = userInfo.gender;
+                    login(user);
+                  }
+                });
+              },
+              fail: function() {
+                Notify({
+                  text: "您拒绝了授权，无法进行微信登录。",
+                  duration: 3000,
+                  selector: "#wechat-login-notify",
+                  backgroundColor: "#D65048"
+                });
+                that.loading = false
+                return;
+              }
+            });
+          } else {
+            wx.getUserInfo({
+              success(res) {
+                const userInfo = res.userInfo;
+                user.nickname = userInfo.nickName;
+                user.avatar = userInfo.avatarUrl;
+                user.gender = userInfo.gender;
 
-      promise.then(() => {
-        let user = {
-          nickname: '',
-          avatar: '',
-          gender: ''
+                login(user);
+              }
+            });
+          }
         }
-        wx.getUserInfo({
-          success(res) {
-            const userInfo = res.userInfo
-            user.nickname = userInfo.nickName
-            user.avatar = userInfo.avatarUrl
-            user.gender = userInfo.gender
-          }
-        })
-
-        this.handleWechatLogin(user)
-      }).catch(err => {
-        Notify({
-          text: '您拒绝了授权，无法进行微信登录。',
-          duration: 3000,
-          selector: "#wechat-login-notify",
-          backgroundColor: "#D65048"
-        });
-        return
-      }).finally(() => {
-        this.loading = false
-      })
+      });
     },
     // 登录
     handleWechatLogin(user) {
       wx.login({
         success: res => {
           if (res.code) {
-            // console.log(111, user)
             this.$http
               .post("/wechat/login", {
                 code: res.code,
                 ...user
               })
-              .then((response) => {
+              .then(response => {
                 // 未与系统绑定
                 if (response.status_code === 404) {
                   wx.navigateTo({ url: "/pages/register/main" });
@@ -111,11 +120,13 @@ export default {
                 }
               })
               .then(response => {
-                wx.setStorageSync("user", response);
-                wx.switchTab({ url: "/pages/home/main" });
+                if (response) {
+                  wx.setStorageSync("user", response);
+                  wx.switchTab({ url: "/pages/home/main" });
+                }
               })
               .catch(err => {
-                this.loading = false;
+                that.loading = false;
                 if (!err.response) {
                   Notify({
                     text: "未知错误",
@@ -131,7 +142,7 @@ export default {
                     backgroundColor: "#D65048"
                   });
                 }
-              })
+              });
           } else {
             console.log("登录失败！" + res.errMsg);
           }
@@ -139,7 +150,7 @@ export default {
       });
     }
   }
-}
+};
 </script>
 <style scoped>
 .logo {
